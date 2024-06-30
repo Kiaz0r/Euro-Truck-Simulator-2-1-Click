@@ -2,20 +2,32 @@ import os
 import subprocess
 import time
 import psutil
+from colorama import init, Fore
+
+init()
 
 multimonitortool_path = "C:\\Programas\\MultiMonitorTool\\MultiMonitorTool.exe"
 fanaleds_path = "C:\\Programas\\FanaLEDs\\FanaLEDs.exe"
 simdashboard_path = "C:\\Programas\\SIM Dashboard Server\\SIMDashboardServer.exe"
 
 
-def print_with_dots(message, monitor_name=None):
+def print_with_dots(message, monitor_name=None, color=None):
     if monitor_name is not None:
         message = f"{message} {monitor_name}"
-    print(message, end="")
+    if color:
+        print(color + message, end="")
+    else:
+        print(message, end="")
     for _ in range(3):
-        time.sleep(1)
-        print(".", end="", flush=True)
-    print()
+        time.sleep(0.5)
+        if color:
+            print(color + ".", end="", flush=True)
+        else:
+            print(".", end="", flush=True)
+    if color:
+        print(Fore.RESET)
+    else:
+        print()
 
 
 def set_primary_monitor(monitor_number):
@@ -73,7 +85,6 @@ print_with_dots("Iniciando Euro Truck Simulator 2")
 try:
     ets2_process = subprocess.Popen(
         "cmd /c start steam://rungameid/227300", shell=True)
-    time.sleep(20)
 except Exception:
     pass
 
@@ -85,6 +96,8 @@ ets2_process_check = False
 while elapsed < timeout:
     ets2_process_check = is_process_running("eurotrucks2.exe")
     if ets2_process_check:
+        print_with_dots(
+            "Não feche essa janela enquanto o jogo estiver em execução", color=Fore.GREEN)
         break
     time.sleep(interval)
     elapsed += interval
@@ -97,4 +110,4 @@ stop_process("SIMDashboardServer.exe")
 
 set_primary_monitor(1)
 
-print_with_dots("Configurações restaudaras")
+print_with_dots("Configurações restauradas")
