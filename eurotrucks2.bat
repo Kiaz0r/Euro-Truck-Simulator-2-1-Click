@@ -1,5 +1,9 @@
 @echo off
-python .\script.py
+setlocal
+call "%~dp0\.venv\Scripts\activate"
+python "%~dp0script.py"
+deactivate
+endlocal
 ::
 :: Esse arquivo batch será responsável por executar o script.py. Dessa forma, é possível criar um atalho chamado "Euro Truck Simulator 2", substituindo o atalho padrão do jogo.
 ::
